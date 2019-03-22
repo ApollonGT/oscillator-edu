@@ -23,7 +23,7 @@ module.exports = function(req, res) {
             width: 600,
             height: 400,
             showPoint: false,
-            axisX: { title: 't (sec)' },
+            axisX: { title: 't (sec)', offset: 50 },
             low: -5,
             high: 5
         };
@@ -45,9 +45,9 @@ module.exports = function(req, res) {
             a.push(a_fun(A, w, phi, i));
             if (i == 0) {
                 labels.push('0');
-            } else if (i > 3.1 && i < 3.2) {
+            } else if (i > 3.14 && i < 3.15) {
                 labels.push('pi');
-            } else if (i > 6.2 && i < 6.3) {
+            } else if (i > 6.28 && i < 6.30) {
                 labels.push('2pi');
             } else {
                 labels.push('');
@@ -57,7 +57,7 @@ module.exports = function(req, res) {
         const line = yield generate('line', options, {
             labels: labels,
             series: [
-                {name: 'x', value: x},
+                {name: 'y', value: x},
                 {name: 'v', value: v},
                 {name: 'a', value: a}
             ]

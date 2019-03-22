@@ -16,8 +16,10 @@
         and see the effect on the position, velosity and acceleration diagrams.
         </p>
         <div id="app">
-            <div class="row">
-                <strong>y = A sin(ωt + φ)</strong>
+            <div class="col-12">
+                <strong>y = A sin(ωt + φ)</strong><br/>
+                <strong>v = ωA cos(ωt + φ)</strong><br/>
+                <strong>y = - ω²A sin(ωt + φ)</strong><br/>
             </div>
             <div class="row">
                 <div class="col-6" style="text-align: center">
@@ -53,7 +55,6 @@
                 methods: {
                     load() {
                         let self = this;
-                        self.plot = "Loading...";
                         axios.get('/chart', {
                             params: {
                                 A: self.A,
