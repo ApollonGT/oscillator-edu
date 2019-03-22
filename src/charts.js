@@ -13,22 +13,24 @@ let a_fun = function(A, w, phi, t) {
     return -w*w*A*Math.sin(w*t + phi);
 }
 
-module.exports = function(res, data) {
-    let A = 1;
-    let w = 1;
-    let phi = 0;
+module.exports = function(req, res) {
+    let A = parseFloat(req.query.A);
+    let w = parseFloat(req.query.w);
+    let phi = parseFloat(req.query.phi);
 
     co(function * () {
         const options = {
-            width: 800,
-            height: 600,
+            width: 600,
+            height: 400,
             showPoint: false,
-            axisX: { title: 't (sec)' }
+            axisX: { title: 't (sec)' },
+            low: -5,
+            high: 5
         };
 
         let t = [];
 
-        for (i = 0; i < 6.4; i = i + 0.1) {
+        for (i = 0; i < 6.4; i = i + 0.05) {
             t.push(i);
         }
 

@@ -1,18 +1,86 @@
 <html>
+    <head>
+        <title>Oscillator simulation</title>
+        <link rel="stylesheet" href="/stylesheets/style.css">
+        <link rel="stylesheet" href="/stylesheets/chart.css">
+        <link rel="stylesheet" href="/stylesheets/bootstrap-grid.min.css">
+        <script src="/javascripts/vue.min.js"></script>
+        <script src="/javascripts/axios.min.js"></script>
+    </head>
 
-<head>
-  <title>Oscillator simulation</title>
-  <link rel="stylesheet" href="/stylesheets/style.css">
-  <link rel="stylesheet" href="/stylesheets/chart.css">
-</head>
+    <body>
+        <h1>Harmonic Oscillator</h1>
+        <p>
+        Welcome to Harmonic Oscillator simulation for education.<br/>
+        In this page you will be able to change the parameters of an oscillator
+        and see the effect on the position, velosity and acceleration diagrams.
+        </p>
+        <div id="app">
+            <div class="row">
+                <strong>y = A sin(ωt + φ)</strong>
+            </div>
+            <div class="row">
+                <div class="col-6" style="text-align: center">
+                    <div class="plot" v-html="plot"></div>
+                </div>
+                <div class="col-5" style="text-align: left">
+                    <label for="A" class="row"><strong>A</strong>
+                        <input id="A" type="range" v-model="A" min="0.1" max="5" step="0.1">
+                        {{A}}
+                    </label>
+                    <label for="w" class="row">ω
+                        <input id="w" type="range" v-model="w" min="0.1" max="10" step="0.1">
+                        {{w}}
+                    </label>
+                    <label for="phi" class="row">φ
+                        <input id="phi" type="range" v-model="phi" min="-10" max="10" step="0.1">
+                        {{phi}}
+                    </label>
+                </div>
+            </div>
+        </div>
 
-<body>
-  <h1>Harmonic Oscillator</h1>
-  <p>
-    Welcome to Harmonic Oscillator simulation for education.<br/>
-    In this page you will be able to change the parameters of an oscillator
-    and see the effect on the position, velosity and acceleration diagrams.
-  </p>
-</body>
+        <script>
+            var app = new Vue({
+                el: '#app',
+                data: {
+                    message: 'Hello Vue!',
+                    plot: 'Loading...',
+                    A: 1,
+                    w: 1,
+                    phi: 0
+                },
+                methods: {
+                    load() {
+                        let self = this;
+                        self.plot = "Loading...";
+                        axios.get('/chart', {
+                            params: {
+                                A: self.A,
+                                w: self.w,
+                                phi: self.phi
+                            }
+                        }).then(function(res) {
+                            self.plot = res.data;
+                        });
+                    },
+                },
+                mounted: function() {
+                    this.load();
+                },
+                watch: {
+                    A: function(newVal, oldVal) {
+                        this.load();
+                    },
+                    w: function(newVal, oldVal) {
+                        this.load();
+                    },
+                    phi: function(newVal, oldVal) {
+                        this.load();
+                    }
+                }
+            })
+        </script>
+    </body>
 
 </html>

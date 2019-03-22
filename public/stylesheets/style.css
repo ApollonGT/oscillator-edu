@@ -8,3 +8,12 @@ body {
 a {
   color: #00B7FF;
 }
+
+.plot {
+    padding: 10px;
+    background-color: white;
+}
+
+div {
+    margin: 5px;
+}

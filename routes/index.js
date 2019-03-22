@@ -9,7 +9,7 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/chart', function(req, res, next) {
-    show_plot(res);
+    show_plot(req, res);
 });
 
 module.exports = router;
