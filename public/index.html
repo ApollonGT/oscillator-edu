@@ -19,7 +19,7 @@
             <div class="col-12">
                 <strong>y = A sin(ωt + φ)</strong><br/>
                 <strong>v = ωA cos(ωt + φ)</strong><br/>
-                <strong>y = - ω²A sin(ωt + φ)</strong><br/>
+                <strong>a = - ω²A sin(ωt + φ)</strong><br/>
             </div>
             <div class="row">
                 <div class="col-6" style="text-align: center">
@@ -40,6 +40,32 @@
                     </label>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-6">
+                    <h5 class="col-12">Comments</h5>
+                    <div class="col-12 comments">
+                        <div class="col-12 comment-block" v-for="comment in comments">
+                            <span class="comment-title">{{comment.who}} | {{comment.when}}</span>
+                            <p>{{comment.comment}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-5">
+                    <h5 class="col-12">New Comment</h5>
+                    <div class="col-12 comments">
+                        <div class="col-12">
+                            <input type="text" v-model="new_comment.name" placeholder="name"/>
+                        </div>
+                        <div class="col-12">
+                            <textarea v-model="new_comment.comment" placeholder="comment"/>
+                                </textarea>
+                        </div>
+                        <div class="col-12">
+                            <button @click="newComment">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <script>
@@ -50,7 +76,16 @@
                     plot: 'Loading...',
                     A: 1,
                     w: 1,
-                    phi: 0
+                    phi: 0,
+                    comments: [{
+                        'who': "John Doe",
+                        'when': "2019-03-23 12:45",
+                        'comment': "Thanks! This is great!"
+                    }],
+                    new_comment: {
+                        name: "",
+                        comment: ""
+                    }
                 },
                 methods: {
                     load() {
@@ -65,9 +100,31 @@
                             self.plot = res.data;
                         });
                     },
+                    loadComments() {
+                        let self = this;
+                        axios.get('/comments')
+                            .then(function(res) {
+                                console.log(JSON.stringify(res.data.comments));
+                                self.comments = res.data.comments;
+                            });
+                    },
+                    newComment() {
+                        let self = this;
+                        if (self.new_comment.name.length == 0 || self.new_comment.name.length == 0) {
+                            alert("Name and Comment fields are required!");
+                        } else {
+                            axios.put('/comments/add', self.new_comment)
+                                .then(function(res) {
+                                    self.loadComments();
+                                    self.new_comment.name = "";
+                                    self.new_comment.comment = "";
+                                });
+                        }
+                    }
                 },
                 mounted: function() {
                     this.load();
+                    this.loadComments();
                 },
                 watch: {
                     A: function(newVal, oldVal) {

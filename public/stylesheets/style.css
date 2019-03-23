@@ -17,3 +17,19 @@ a {
 div {
     margin: 5px;
 }
+
+.comments {
+    border: 1px solid #fff;
+    border-radius: 4px;
+    padding: 5px;
+    box-sizing: border-box;
+}
+
+.comment-block {
+    border-bottom: 1px dotted #fff;
+}
+
+.comment-title {
+    font-style: italic;
+    color: #797979;
+}
